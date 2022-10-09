@@ -31,11 +31,11 @@ function heroMovementAnim(){
       heroFrame += heroFrameModifier;
       console.log('Hero Frame: ' + heroFrame);
       console.log('Hero frame modifier: '+heroFrameModifier);
-      if(heroFrame === 17){
+      if(heroFrame === 18){
          heroFrame = 0;
       }
    }
-   setTimeout(()=>window.requestAnimationFrame(animFrameHandler), 80);
+   setTimeout(()=>window.requestAnimationFrame(animFrameHandler), 40);
 }
 
 document.addEventListener('keydown', (event) => {
