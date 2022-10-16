@@ -27,19 +27,17 @@ class Hero{
       if(this.frame === 12){
          this.frame = 0;
       }
+      console.log(this.frame)
       setTimeout(()=>window.requestAnimationFrame(animFrameHandler), 120);
    }
 
    chooseDirection(){
+      this.frameModifier = 1;
       if(this.currentAction === 'MR' && this.currentDirection != 'R'){
          this.image.style.transform = 'scaleX(1)';
-         this.frame = 0;
-         this.frameModifier = 1;
          this.currentDirection = 'R';
       } else if(this.currentAction === 'ML' && this.currentDirection != 'L'){
          this.image.style.transform = 'scaleX(-1)';
-         this.frame = 18;
-         this.frameModifier = -1;
          this.currentDirection = 'L';
       }
    }
@@ -49,16 +47,14 @@ class Hero{
       if(this.currentAction === 'MR'){
          this.image.style.objectPosition = `-${this.frame*120.3+33}px -83px`;
          this.frame += this.frameModifier;
-         if(this.frame === 18){
-            this.frame = 0;
-         }
       } else if(this.currentAction === 'ML'){
-         this.image.style.objectPosition = `-${this.frame*120.3+33}px -83px`;
-         this.frame -= this.frameModifier;
-         if(this.frame === 0){
-            this.frame = 18;
-         }
+         this.image.style.objectPosition = `${this.revereseStartPos - this.frame*120.3}px -83px`;
+         this.frame += this.frameModifier;
       }
+      if(this.frame === 18){
+         this.frame = 0;
+      }
+      console.log(this.frame)
       setTimeout(()=>window.requestAnimationFrame(animFrameHandler), 40);
    }
 }
