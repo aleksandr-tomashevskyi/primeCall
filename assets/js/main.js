@@ -1,14 +1,14 @@
 'use strict'
 
 class Hero{
-   constructor(image, container, frame, frameModifier, currentAction, currentDirection, revereseStartPos, footPrintContainer, footPrintPosX, footPrintPosY, footPrintWidth, footPrintHeight){
+   constructor(image, container, frame, frameModifier, currentAction, currentDirection, reverseStartPos, footPrintContainer, footPrintPosX, footPrintPosY, footPrintWidth, footPrintHeight){
       this.image = image;
       this.container = container;
       this.frame = frame;
       this.frameModifier = frameModifier;
       this.currentAction = currentAction;
       this.currentDirection = currentDirection;
-      this.revereseStartPos = revereseStartPos;
+      this.reverseStartPos = reverseStartPos;
       this.footPrintContainer = footPrintContainer;
       this.footPrintPosX = footPrintPosX;
       this.footPrintPosY = footPrintPosY;
@@ -18,7 +18,7 @@ class Hero{
 
    idleAnim(){
       if(this.currentDirection === 'L'){
-         this.image.style.objectPosition = `${this.revereseStartPos - (this.frame ? this.frame*120.3 : 0) }px -1px`;
+         this.image.style.objectPosition = `${this.reverseStartPos - (this.frame ? this.frame*120.3 : 0) }px -1px`;
          this.frame += this.frameModifier;
       } else{
          this.image.style.objectPosition = `-${this.frame*120.3+33}px -1px`;
@@ -27,7 +27,6 @@ class Hero{
       if(this.frame === 12){
          this.frame = 0;
       }
-      console.log(this.frame)
       setTimeout(()=>window.requestAnimationFrame(animFrameHandler), 120);
    }
 
@@ -48,13 +47,18 @@ class Hero{
          this.image.style.objectPosition = `-${this.frame*120.3+33}px -83px`;
          this.frame += this.frameModifier;
       } else if(this.currentAction === 'ML'){
-         this.image.style.objectPosition = `${this.revereseStartPos - this.frame*120.3}px -83px`;
+         this.image.style.objectPosition = `${this.reverseStartPos - this.frame*120.3}px -83px`;
+         this.frame += this.frameModifier;
+      } else if(this.currentAction === 'MU' && this.currentDirection === 'R' || this.currentAction === 'MD' && this.currentDirection === 'R'){
+         this.image.style.objectPosition = `-${this.frame*120.3+33}px -83px`;
+         this.frame += this.frameModifier;
+      } else if(this.currentAction === 'MU' && this.currentDirection === 'L' || this.currentAction === 'MD' && this.currentDirection === 'L'){
+         this.image.style.objectPosition = `${this.reverseStartPos - this.frame*120.3}px -83px`;
          this.frame += this.frameModifier;
       }
       if(this.frame === 18){
          this.frame = 0;
       }
-      console.log(this.frame)
       setTimeout(()=>window.requestAnimationFrame(animFrameHandler), 40);
    }
 }
@@ -76,6 +80,10 @@ document.addEventListener('keydown', (event) => {
       heroInstance.currentAction = 'MR'; //MR stands for Movement Right
    } else if(event.key === 'ArrowLeft'){
       heroInstance.currentAction = 'ML'; //ML stands for Movement Left
+   } else if(event.key === 'ArrowUp'){
+      heroInstance.currentAction = 'MU'; //MU stands for Movement Up
+   } else if(event.key === 'ArrowDown'){
+      heroInstance.currentAction = 'MD'; //MU stands for Movement Down
    }
 });
 document.addEventListener('keyup', (event) => {
