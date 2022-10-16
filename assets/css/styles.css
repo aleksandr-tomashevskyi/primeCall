@@ -29,5 +29,7 @@
 }
 
 .hero__image{
-   /* object-position: -50px -1px; */
+   /* object-position: 2050px 0; */
+   /* transform: scaleX(-1); */
+   /* transform: translateX(-100%); */
 }

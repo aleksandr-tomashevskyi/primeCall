@@ -1,18 +1,14 @@
 'use strict'
 
-let heroImage = document.querySelector('.hero__image');
-let heroContainer = document.querySelector('.hero__container');
-let heroFrame = 0;
-let heroFrameModifier = 1;
-let currentHeroAction = 'idle';
-
 class Hero{
-   constructor(image, container, frame, frameModifier, currentAction, footPrintContainer, footPrintPosX, footPrintPosY, footPrintWidth, footPrintHeight){
+   constructor(image, container, frame, frameModifier, currentAction, currentDirection, revereseStartPos, footPrintContainer, footPrintPosX, footPrintPosY, footPrintWidth, footPrintHeight){
       this.image = image;
       this.container = container;
       this.frame = frame;
       this.frameModifier = frameModifier;
       this.currentAction = currentAction;
+      this.currentDirection = currentDirection;
+      this.revereseStartPos = revereseStartPos;
       this.footPrintContainer = footPrintContainer;
       this.footPrintPosX = footPrintPosX;
       this.footPrintPosY = footPrintPosY;
@@ -21,29 +17,53 @@ class Hero{
    }
 
    idleAnim(){
-      this.image.style.objectPosition = `-${this.frame*120.3+33}px -1px`;
-      this.frame += this.frameModifier;
-      if(this.frame == 11){
-         this.frameModifier = this.frameModifier * -1;
-      } else if(this.frame < 1){
-         this.frameModifier = this.frameModifier * -1;
+      if(this.currentDirection === 'L'){
+         this.image.style.objectPosition = `${this.revereseStartPos - (this.frame ? this.frame*120.3 : 0) }px -1px`;
+         this.frame += this.frameModifier;
+      } else{
+         this.image.style.objectPosition = `-${this.frame*120.3+33}px -1px`;
+         this.frame += this.frameModifier;
       }
-      setTimeout(()=>window.requestAnimationFrame(animFrameHandler), 150);
+      if(this.frame === 12){
+         this.frame = 0;
+      }
+      setTimeout(()=>window.requestAnimationFrame(animFrameHandler), 120);
+   }
+
+   chooseDirection(){
+      if(this.currentAction === 'MR' && this.currentDirection != 'R'){
+         this.image.style.transform = 'scaleX(1)';
+         this.frame = 0;
+         this.frameModifier = 1;
+         this.currentDirection = 'R';
+      } else if(this.currentAction === 'ML' && this.currentDirection != 'L'){
+         this.image.style.transform = 'scaleX(-1)';
+         this.frame = 18;
+         this.frameModifier = -1;
+         this.currentDirection = 'L';
+      }
    }
 
    moveAnim(){
+      this.chooseDirection();
       if(this.currentAction === 'MR'){
          this.image.style.objectPosition = `-${this.frame*120.3+33}px -83px`;
          this.frame += this.frameModifier;
          if(this.frame === 18){
             this.frame = 0;
          }
+      } else if(this.currentAction === 'ML'){
+         this.image.style.objectPosition = `-${this.frame*120.3+33}px -83px`;
+         this.frame -= this.frameModifier;
+         if(this.frame === 0){
+            this.frame = 18;
+         }
       }
       setTimeout(()=>window.requestAnimationFrame(animFrameHandler), 40);
    }
 }
 
-let heroInstance = new Hero(document.querySelector('.hero__image'), document.querySelector('.hero__container'), 0, 1, 'idle', null, null, null, null);
+let heroInstance = new Hero(document.querySelector('.hero__image'), document.querySelector('.hero__container'), 0, 1, 'idle', 'R', 2050, null, null, null, null);
 
 
 function animFrameHandler(){
